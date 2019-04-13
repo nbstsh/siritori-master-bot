@@ -1,4 +1,9 @@
 {
-    "channelAccessToken": "CHANNEL_ACCESS_TOKEN",
-    "channelSecret": "CHANNEL_SECRET"
+    "lineConfig": {
+        "channelAccessToken": "SMB_CHANNEL_ACCESS_TOKEN",
+        "channelSecret": "SMB_CHANNEL_SECRET"
+    },
+    "dbConfig": {
+        "password": "SMB_DB_PASSWORD"
+    }
 }

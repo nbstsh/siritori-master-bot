@@ -1,4 +1,15 @@
 {
     "channelAccessToken": "",
-    "channelSecret": ""
+    "channelSecret": "",
+    "dbConfig": {
+        "prefix": "mongodb+srv",
+        "userName": "testUser",
+        "password": "",
+        "host": "cluster0-gq8fg.mongodb.net",
+        "dbName": "siritoriMasterBot"
+    },
+    "lineConfig": {
+        "channelAccessToken": "",
+        "channelSecret": ""
+    }
 }

@@ -1,9 +1,6 @@
 const config = require('config')
 const { middleware, Client, SignatureValidationFailed, JSONParseError } = require('@line/bot-sdk')
-const lineConfig = {
-    channelAccessToken: config.get('channelAccessToken'),
-    channelSecret: config.get('channelSecret')
-}
+const lineConfig = config.get('lineConfig')
 
 const client = new Client(lineConfig)
 

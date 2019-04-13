@@ -4,6 +4,7 @@ const logger = require('./log/logger')
 
 require('./startup/error')
 require('./startup/config')
+require('./startup/db')
 require('./startup/routes')(app)
 
 const PORT = process.env.PORT || 3000

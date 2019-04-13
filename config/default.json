@@ -1,4 +1,6 @@
 {
-    "channelAccessToken": "",
-    "channelSecret": ""
+    "lineConfig": {
+        "channelAccessToken": "",
+        "channelSecret": ""
+    }
 }
