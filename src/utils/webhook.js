@@ -5,10 +5,10 @@ const lineConfig = {
     channelSecret: config.get('channelSecret')
 }
 
-const client = new Client(lineConfig);
+const client = new Client(lineConfig)
 
-const middleware = middleware(lineConfig)
-
+// Write your event handler here
+// Default behaviour is just sending back the same text sent by client
 const handleEvent = (event) => {
     if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null);
@@ -34,8 +34,8 @@ const handleError = (err, req, res, next) => {
 
 module.exports = {
     client,
-    middleware, 
     handleEvent,
-    handleError
+    handleError,
+    middleware: middleware(lineConfig)
 }
 

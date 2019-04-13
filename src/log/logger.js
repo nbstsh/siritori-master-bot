@@ -10,6 +10,7 @@ const logger = createLogger({
 })
 
 logger.exceptions.handle(
+    new transports.Console(),
     new transports.File({ filename: 'logs/exceptions.log' })
 )
 
