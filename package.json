@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "collect-words": "node src/scripts/words"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "config": "^3.1.0",
     "express": "^4.16.4",
     "express-async-errors": "^3.1.1",
+    "joi": "^14.3.1",
     "jsdom": "^14.0.0",
     "mongoose": "^5.5.1",
     "request": "^2.88.0",
