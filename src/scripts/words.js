@@ -14,10 +14,12 @@ const main = async () => {
         const startWith = hiragana[0]
         const word = { startWith, display, hiragana }
 
+        // if display contains more than one word
+        if (display.match(/\s|\.|,/)) return null
+
         const { error } = validateWord(word)
         if (error) return null 
 
-        
         return new Word(word).save().then(() => {
             logger.info(`Successfully saved >>> { startWith: ${startWith}, display: ${display}, hiragana: ${hiragana}}`)
         })
