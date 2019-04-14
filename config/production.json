@@ -1,7 +1,7 @@
 {
     "dbConfig": {
         "prefix": "mongodb+srv",
-        "userName": "testUser",
+        "userName": "smbuser",
         "password": "",
         "host": "cluster0-gq8fg.mongodb.net",
         "dbName": "siritoriMasterBot"
