@@ -1,19 +1,33 @@
 const config = require('config')
 const { middleware, Client, SignatureValidationFailed, JSONParseError } = require('@line/bot-sdk')
+const { findReplyWord, toHiragana } = require('./siritori')
 const lineConfig = config.get('lineConfig')
 
 const client = new Client(lineConfig)
 
 // Write your event handler here
 // Default behaviour is just sending back the same text sent by client
-const handleEvent = (event) => {
+const handleEvent = async (event) => {
     if (event.type !== 'message' || event.message.type !== 'text') {
-        return Promise.resolve(null);
+        return null
     }
+
+    let text = 'ん？ちょっと何を言ってるのかわからんのぉ、、、日本語にしてくれんか？'
+
+    const givenHiragana = await toHiragana(event.message.text)
+
+    if (givenHiragana) {
+        const lastLetter = givenHiragana.split('').pop()
+        const { display, hiragana } = await findReplyWord(lastLetter) || {}
+
+        text = (display && hiragana) ? 
+            `${display} (${hiragana})`:
+            'すまん、ぼーっとしてた、、、もう一回送ってくれんかのぉ'
+    } 
       
     return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: event.message.text
+        text
     })
 }
 

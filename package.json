@@ -18,6 +18,8 @@
     "express-async-errors": "^3.1.1",
     "joi": "^14.3.1",
     "jsdom": "^14.0.0",
+    "kuroshiro": "^1.1.2",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "mongoose": "^5.5.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
