@@ -1,8 +1,6 @@
 const rp = require('request-promise')
 const uri = 'https://jisho.org/api/v1/search/words'
 
-const japanesewordlist = 'https://www.matsu-kaze.net/mk/meishi/'
-
 
 const search = async (keyword) => {
     if (!keyword || typeof keyword !== 'string') return 

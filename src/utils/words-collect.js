@@ -1,5 +1,6 @@
 const jsdom = require('jsdom')
 const { JSDOM } = jsdom
+const { katakanaToHiragana } = require('./siritori')
 
 
 const url = 'https://www.matsu-kaze.net/mk/meishi/'
@@ -47,15 +48,6 @@ const collectWords = async () => {
     const qsArray = await fetchQueryStrings()
     const listArray = await Promise.all(qsArray.map(qs => fetchWords(qs)))
     return listArray.reduce((a, c) => ([...a, ...c]), []) // flatten the array
-}
-
-
-// helper
-function katakanaToHiragana(src) {
-	return src.replace(/[\u30a1-\u30f6]/g, function(match) {
-		var chr = match.charCodeAt(0) - 0x60;
-		return String.fromCharCode(chr);
-	})
 }
 
 

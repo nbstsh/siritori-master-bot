@@ -1,9 +1,8 @@
 const config = require('config')
 const { middleware, Client, SignatureValidationFailed, JSONParseError } = require('@line/bot-sdk')
-const { findReplyWord, toHiragana } = require('./siritori')
 const lineConfig = config.get('lineConfig')
-
 const client = new Client(lineConfig)
+const { generateReplyMessages } = require('./reply-messages')
 
 // Write your event handler here
 // Default behaviour is just sending back the same text sent by client
@@ -12,23 +11,10 @@ const handleEvent = async (event) => {
         return null
     }
 
-    let text = 'ん？ちょっと何を言ってるのかわからんのぉ、、、日本語にしてくれんか？'
-
-    const givenHiragana = await toHiragana(event.message.text)
-
-    if (givenHiragana) {
-        const lastLetter = givenHiragana.split('').pop()
-        const { display, hiragana } = await findReplyWord(lastLetter) || {}
-
-        text = (display && hiragana) ? 
-            `${display} (${hiragana})`:
-            'すまん、ぼーっとしてた、、、もう一回送ってくれんかのぉ'
-    } 
+    const replyMessages = await generateReplyMessages(event.message.text)
+    const replayMessageObjs = replyMessages.map(text => ({ type: 'text', text }) )
       
-    return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text
-    })
+    return client.replyMessage(event.replyToken, replayMessageObjs)
 }
 
 const handleError = (err, req, res, next) => {
