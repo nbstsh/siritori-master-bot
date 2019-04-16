@@ -2,7 +2,7 @@ const { Word } = require('../models/word')
 const { Game } = require('../models/game')
 const messages = require('./reply-messages')
 const { toHiragana } = require('./word-convert')
-
+const logger = require('../log/logger')
 
 class Siritori { 
     constructor(game) {
@@ -38,20 +38,25 @@ class Siritori {
             if (!givenHiragana) return messages.invalid
         
             // siritori master win
-            if (givenHiragana.endsWith('ん')) return messages.win
-        
+            if (givenHiragana.endsWith('ん')) {
+                await this.game.reset()
+                return messages.win
+            }
         
             const lastLetter = givenHiragana.split('').pop()
             const word = await this.findReplyWord(lastLetter)
         
             // siritori master lose
-            if (!word) return messages.lose(lastLetter)
+            if (!word) {
+                await this.game.reset()
+                return messages.lose(lastLetter)
+            }
         
             // continue siritori
             return messages.replay(word)
         }
         catch (e) {
-            console.log(e.message)
+            logger.error(e)
             return messages.error
         }
     }

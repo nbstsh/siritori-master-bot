@@ -2,7 +2,6 @@ const config = require('config')
 const { middleware, Client, SignatureValidationFailed, JSONParseError } = require('@line/bot-sdk')
 const lineConfig = config.get('lineConfig')
 const client = new Client(lineConfig)
-const { generateReplyMessages } = require('./reply-messages')
 const initSiritori = require('./siritori')
 
 // Write your event handler here

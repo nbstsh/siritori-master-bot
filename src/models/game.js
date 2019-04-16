@@ -13,6 +13,13 @@ const gameSchema = new mongoose.Schema({
     }]
 })
 
+gameSchema.methods.reset = async function() {
+    const game = this 
+
+    game.words = []
+    await game.save()
+}
+
 const Game = mongoose.model('Game', gameSchema)
 
 module.exports = {
