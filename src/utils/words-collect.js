@@ -1,6 +1,6 @@
 const jsdom = require('jsdom')
 const { JSDOM } = jsdom
-const { katakanaToHiragana } = require('./siritori')
+const { katakanaToHiragana } = require('./word-convert')
 
 
 const url = 'https://www.matsu-kaze.net/mk/meishi/'

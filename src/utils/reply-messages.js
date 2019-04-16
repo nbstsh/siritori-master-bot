@@ -1,7 +1,6 @@
-const { findReplyWord, toHiragana } = require('./siritori')
 
 // Max numbers of messages: 5
-const messages = {
+module.exports = {
     invalid: [
         'ん？ちょっと何を言ってるのかわからんのぉ、、、日本語かの？'
     ],
@@ -31,37 +30,4 @@ const messages = {
             `${display} (${hiragana})`
         ]
     } 
-}
-
-const generateReplyMessages = async (givenText) => {
-    if (!givenText) return messages.invalid
-
-    try {
-        const givenHiragana = await toHiragana(givenText)
-    
-        // givenText include a letter which  can't be converted to hiragana
-        if (!givenHiragana) return messages.invalid
-    
-        // siritori master win
-        if (givenHiragana.endsWith('ん')) return messages.win
-    
-    
-        const lastLetter = givenHiragana.split('').pop()
-        const word = await findReplyWord(lastLetter)
-    
-        // siritori master lose
-        if (!word) return messages.lose(lastLetter)
-    
-        // continue siritori
-        return messages.replay(word)
-    }
-    catch (e) {
-        return messages.error
-    }
-}
-
-
-
-module.exports = { 
-    generateReplyMessages
 }

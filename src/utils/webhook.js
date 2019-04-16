@@ -3,6 +3,7 @@ const { middleware, Client, SignatureValidationFailed, JSONParseError } = requir
 const lineConfig = config.get('lineConfig')
 const client = new Client(lineConfig)
 const { generateReplyMessages } = require('./reply-messages')
+const initSiritori = require('./siritori')
 
 // Write your event handler here
 // Default behaviour is just sending back the same text sent by client
@@ -11,7 +12,8 @@ const handleEvent = async (event) => {
         return null
     }
 
-    const replyMessages = await generateReplyMessages(event.message.text)
+    const siritori = await initSiritori(event.source.userId)
+    const replyMessages = await siritori.generateReplyMessages(event.message.text)
     const replayMessageObjs = replyMessages.map(text => ({ type: 'text', text }) )
       
     return client.replyMessage(event.replyToken, replayMessageObjs)
