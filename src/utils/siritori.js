@@ -1,48 +1,76 @@
-const Kuroshiro = require('kuroshiro')
-const KuromojiAnalyzer = require('kuroshiro-analyzer-kuromoji')
-const analyzer = new KuromojiAnalyzer();
-const kuroshiro = new Kuroshiro()
 const { Word } = require('../models/word')
+const { Game } = require('../models/game')
+const messages = require('./reply-messages')
+const { toHiragana } = require('./word-convert')
 
 
-let initCompleted = false 
-kuroshiro.init(analyzer).then(() => {
-    initCompleted = true
-})
+class Siritori { 
+    constructor(game) {
+        this.game = game
+    }
+    async findReplyWord(startWith) {
+        if (typeof startWith !== 'string' || 
+            startWith.length !== 1 || 
+            !startWith.match(/^[ぁ-ん]$/)) throw new Error('Invalid startWith provied') 
 
-// if word include a letter which  can't be converted to hiragana, return null
-const toHiragana = async (word) => {
-    if (!initCompleted) await kuroshiro.init(analyzer)
+        
+        // const words =  await Word.find({ startWith })
+        const invalidWordIds = this.game.words
+        const words = await Word.find({ _id: { $nin: invalidWordIds }, startWith })
+        if (words.length === 0) return null
 
-    const converted = await kuroshiro.convert(word)
-    const hiragana = katakanaToHiragana(converted)
+        const index = getRandomInt(words.length)
+        const pickedWord = words[index]
 
-    const isValid = hiragana.split().every(s => Kuroshiro.Util.isHiragana(s))
+        // store word as already-used words list
+        this.game.words.push(pickedWord._id)
+        await this.game.save()
 
-    return isValid ? hiragana : null
-}
-
-const katakanaToHiragana = (src) => {
-	return src.replace(/[\u30a1-\u30f6]/g, function(match) {
-		var chr = match.charCodeAt(0) - 0x60;
-		return String.fromCharCode(chr);
-	})
-}
-
-const findReplyWord = async (startWith) => {
-    if (typeof startWith !== 'string' || startWith.length !== 1 || !startWith.match(/^[ぁ-ん]$/)) return 
-
-    const words =  await Word.find({ startWith })
-    if (words.length === 0) return null
-
-    const index = getRandomInt(words.length)
-    return words[index]
+        return pickedWord
+    }
+    async generateReplyMessages(givenText) {
+        if (!givenText) return messages.invalid
+    
+        try {
+            const givenHiragana = await toHiragana(givenText)
+        
+            // givenText include a letter which  can't be converted to hiragana
+            if (!givenHiragana) return messages.invalid
+        
+            // siritori master win
+            if (givenHiragana.endsWith('ん')) return messages.win
+        
+        
+            const lastLetter = givenHiragana.split('').pop()
+            const word = await this.findReplyWord(lastLetter)
+        
+            // siritori master lose
+            if (!word) return messages.lose(lastLetter)
+        
+            // continue siritori
+            return messages.replay(word)
+        }
+        catch (e) {
+            console.log(e.message)
+            return messages.error
+        }
+    }
 }
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
+const initSiritori = async (userId) => {
+    if (!userId) throw new Error()
+
+    let game = await Game.findOne({ userId })
+    if (!game) {
+        game = await Game.create({ userId })
+    }
+
+    return new Siritori(game)
+}
 
 
-module.exports = { findReplyWord, toHiragana, katakanaToHiragana }
+module.exports = initSiritori
