@@ -4,6 +4,6 @@
         "channelSecret": "SMB_CHANNEL_SECRET"
     },
     "dbConfig": {
-        "password": "SMB_DB_PASSWORD"
+        "connection": "SMB_DB_CONNECTION"
     }
 }

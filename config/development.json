@@ -1,9 +1,3 @@
 {
-    "dbConfig": {
-        "prefix": "mongodb",
-        "userName": "testUser",
-        "password": "",
-        "host": "127.0.0.1:27017",
-        "dbName": "siritoriMasterBot"
-    }
+    
 }

@@ -9,7 +9,7 @@ if (!config.get('lineConfig.channelSecret')) {
     throw new Error('FATAL ERROR: channelSecret is not difined.')
 }
 
-if (!config.get('dbConfig.password')) {
-    throw new Error('FATAL ERROR: dbConfig.password is not difined')
+if (!config.get('dbConfig.connection')) {
+    throw new Error('FATAL ERROR: dbConfig.connection is not difined')
 }
 

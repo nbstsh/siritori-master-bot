@@ -2,5 +2,8 @@
     "lineConfig": {
         "channelAccessToken": "",
         "channelSecret": ""
+    },
+    "dbConfig": {
+        "connection": ""
     }
 }
