@@ -56,6 +56,7 @@ class Siritori {
             return messages.replay(word)
         }
         catch (e) {
+            console.log(e)
             logger.error(e)
             return messages.error
         }

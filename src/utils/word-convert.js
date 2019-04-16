@@ -12,21 +12,31 @@ kuroshiro.init(analyzer).then(() => {
 const toHiragana = async (word) => {
     if (!initCompleted) await kuroshiro.init(analyzer)
 
+    if (hasInvalidChar(word)) return null
+
     const converted = await kuroshiro.convert(word)
-    const hiragana = katakanaToHiragana(converted)
-
-    const isValid = hiragana.split().every(s => Kuroshiro.Util.isHiragana(s))
-
-    return isValid ? hiragana : null
+    let hiragana = katakanaToHiragana(converted)
+    console.log({ hiragana })
+    const removed = removeCharsExceptHiragana(hiragana)
+    console.log({ removed })
+    return removed
 }
 
 const katakanaToHiragana = (src) => {
-	return src.replace(/[\u30a1-\u30f6]/g, function(match) {
-		var chr = match.charCodeAt(0) - 0x60;
+	return src.replace(/[\u30a1-\u30f6]/g, (match) => {
+		const chr = match.charCodeAt(0) - 0x60;
 		return String.fromCharCode(chr);
 	})
 }
 
+const hasInvalidChar = (str) => {
+    const invalidPattern = /[a-zA-Z]/
+    return str.match(invalidPattern) !== null
+}
+
+const removeCharsExceptHiragana = (str) => {
+    return str.split('').filter(s => Kuroshiro.Util.isHiragana(s)).join('')
+}
 
 module.exports = {
     toHiragana,
