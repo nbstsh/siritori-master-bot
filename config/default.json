@@ -5,5 +5,8 @@
     },
     "dbConfig": {
         "connection": ""
+    },
+    "wordConfig": {
+        "invalidPattern": "[a-zA-Z]"
     }
 }

@@ -2,6 +2,8 @@ const Kuroshiro = require('kuroshiro')
 const KuromojiAnalyzer = require('kuroshiro-analyzer-kuromoji')
 const analyzer = new KuromojiAnalyzer();
 const kuroshiro = new Kuroshiro()
+const config = require('config')
+const invalidPattern = new RegExp(config.get('wordConfig.invalidPattern'))
 
 let initCompleted = false
 kuroshiro.init(analyzer).then(() => {
@@ -12,7 +14,7 @@ kuroshiro.init(analyzer).then(() => {
 const toHiragana = async (word) => {
     if (!initCompleted) await kuroshiro.init(analyzer)
 
-    if (hasInvalidChar(word)) return null
+    if (invalidPattern.test(word)) return null
 
     const converted = await kuroshiro.convert(word)
     let hiragana = katakanaToHiragana(converted)
@@ -26,14 +28,10 @@ const katakanaToHiragana = (src) => {
 	})
 }
 
-const hasInvalidChar = (str) => {
-    const invalidPattern = /[a-zA-Z]/
-    return str.match(invalidPattern) !== null
-}
-
 const removeCharsExceptHiragana = (str) => {
     return str.split('').filter(s => Kuroshiro.Util.isHiragana(s)).join('')
 }
+
 
 module.exports = {
     toHiragana,
