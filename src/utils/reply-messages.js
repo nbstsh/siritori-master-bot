@@ -23,11 +23,14 @@ module.exports = {
         '逃げるんじゃ！！！走れ！！！！',
         '(世の中の不条理によりエラーが発生しました。時間を置いてからもう一度お試しください by 神)'
     ],
-    replay({ display, hiragana}) {
+    reply({ display, hiragana}) {
         if (!display && !hiragana) throw new Error()
 
         return [
             `${display} (${hiragana})`
         ]
-    } 
+    },
+    start: [
+        'レッツしりとりスタートじゃ！'
+    ]
 }

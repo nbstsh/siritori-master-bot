@@ -13,9 +13,9 @@ const handleEvent = async (event) => {
 
     const siritori = await initSiritori(event.source.userId)
     const replyMessages = await siritori.generateReplyMessages(event.message.text)
-    const replayMessageObjs = replyMessages.map(text => ({ type: 'text', text }) )
+    const replyMessageObjs = replyMessages.map(text => ({ type: 'text', text }) )
       
-    return client.replyMessage(event.replyToken, replayMessageObjs)
+    return client.replyMessage(event.replyToken, replyMessageObjs)
 }
 
 const handleError = (err, req, res, next) => {

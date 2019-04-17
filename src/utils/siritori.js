@@ -12,9 +12,8 @@ class Siritori {
         if (typeof startWith !== 'string' || 
             startWith.length !== 1 || 
             !startWith.match(/^[ぁ-ん]$/)) throw new Error('Invalid startWith provied') 
-
         
-        // const words =  await Word.find({ startWith })
+        // exclude words already used in the siritori game
         const invalidWordIds = this.game.words
         const words = await Word.find({ _id: { $nin: invalidWordIds }, startWith })
         if (words.length === 0) return null
@@ -53,11 +52,17 @@ class Siritori {
             }
         
             // continue siritori
-            return messages.replay(word)
+            const replyMessages = messages.reply(word)
+
+            // if it's the first round of the siritori game
+            if (this.game.words.length === 1) {
+                replyMessages.unshift(...messages.start)
+            }
+
+            return replyMessages
         }
         catch (e) {
-            console.log(e)
-            logger.error(e)
+            logger.error(e.message)
             return messages.error
         }
     }

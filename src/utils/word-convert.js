@@ -16,10 +16,7 @@ const toHiragana = async (word) => {
 
     const converted = await kuroshiro.convert(word)
     let hiragana = katakanaToHiragana(converted)
-    console.log({ hiragana })
-    const removed = removeCharsExceptHiragana(hiragana)
-    console.log({ removed })
-    return removed
+    return removeCharsExceptHiragana(hiragana)
 }
 
 const katakanaToHiragana = (src) => {
