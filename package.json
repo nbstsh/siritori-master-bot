@@ -20,7 +20,7 @@
     "jsdom": "^14.0.0",
     "kuroshiro": "^1.1.2",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
-    "mongoose": "^5.5.1",
+    "mongoose": "^5.7.5",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "winston": "^3.2.1"
